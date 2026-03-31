@@ -3,52 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz App</title>
-    <link rel="stylesheet" href="style.css"/>
+    <title>NurseQuiz - Study App</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+
     <div class="container">
-        <div class="screen active" id="start-screen">
-          <h1>Quiz time</h1>
-          <p>Test your knowledge with quizzes</p>
-          <button id="start-btn">Start Quiz</button>
+        <!-- START SCREEN -->
+        <div id="start-screen" class="screen active">
+            <h1><i class="fa-solid fa-user-nurse"></i> NurseQuiz</h1>
+            <p>Master your nursing knowledge</p>
+            <button id="start-btn">Start Quiz</button>
         </div>
 
-    <div class="screen" id="Quiz-screen">
-
-        <div class="quiz-header">
-          <h2 id="question-text">Question</h2>
-          <div class="quiz-info">
-            <p>
-                Question <span id="curent-question">1</span> of <span id="total-questions">5</span>
-            </p>
-
+        <!-- QUIZ SCREEN -->
+        <div id="quiz-screen" class="screen">
+            <div class="quiz-header">
+                <div class="quiz-info">
+                    <span id="current-question">Question 1</span>
+                    <span>Score: <span id="score">0</span></span>
+                </div>
+                <div class="quiz-info">
+                    <span id="total-questions">5</span>
+                </div>
+            </div>
             
-            <P>
-              Score:<span id="Score">0</span>
-            </P>
-          </div>  
-        </div>
-      <div id="answers-container" class="answers-container">
-      </div>
+            <h2 id="question-text">Question goes here</h2>
+            
+            <div id="answer-container" class="answers-container">
+                <!-- Buttons injected by JS -->
+            </div>
 
-      <div class="progress-bar">
-        <div id="progress" class="progress"></div>
-      </div>
-      </div>
+            <div class="progress-bar">
+                <div id="progress" class="progress"></div>
+            </div>
+        </div>
 
-      <div id="result-screen" class="screen">
-        <h1>Quiz Results</h1>
-        <div class="result-info">
-          <P>You scored<span id="final-score">0</span>out of<span id="max-score">5</span></P>
-        
-        <div id="result-message">Good work</div>
-        <div>
-          <button id="restart-tn">Restart Quiz</button>
+        <!-- RESULT SCREEN -->
+        <div id="result-screen" class="screen">
+            <div id="result-info">
+                <h1>Quiz Results</h1>
+                <div class="result-info-box">
+                    <p>You scored <span id="final-score">0</span> out of <span id="max-score">5</span></p>
+                    <p id="result-message">Good work!</p>
+                </div>
+                <button id="restart-btn">Restart Quiz</button>
+            </div>
         </div>
-        </div>
-      </div>
     </div>
-   <script src="script.js"> </script>
+
+    <script src="script.js"></script>
 </body>
 </html>
