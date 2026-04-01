@@ -11,6 +11,7 @@
 <body>
 
     <div class="container">
+        
         <!-- START SCREEN -->
         <div id="start-screen" class="screen active">
             <h1><i class="fa-solid fa-user-nurse"></i> NurseQuiz</h1>
@@ -21,17 +22,18 @@
         <!-- QUIZ SCREEN -->
         <div id="quiz-screen" class="screen">
             <div class="quiz-header">
-                <div class="quiz-info">
-                    <span id="current-question">Question 1</span>
-                    <span>Score: <span id="score">0</span></span>
-                </div>
-                <div class="quiz-info">
-                    <span id="total-questions">5</span>
+                <!-- ... existing header ... -->
                 </div>
             </div>
             
             <h2 id="question-text">Question goes here</h2>
             
+            <!-- NEW:  Category label -->
+            <div id="category-label" class="category-label"></div>
+    
+            <!-- NEW: Explanation box -->
+            <div id="explanation-box" class="explanation-box"></div>
+
             <div id="answer-container" class="answers-container">
                 <!-- Buttons injected by JS -->
             </div>

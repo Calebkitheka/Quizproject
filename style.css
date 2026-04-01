@@ -174,3 +174,46 @@ button:hover {
         font-size: 1rem;
     }
 }
+
+/* ===== NEW: Category Label ===== */
+.category-label {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 10px auto 20px;
+  display: inline-block;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* ===== NEW: Explanation Box ===== */
+.explanation-box {
+  background-color: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  padding: 12px 16px;
+  margin: 15px 0;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.95rem;
+  color: #1565c0;
+  display: none; /* Hidden by default */
+  text-align: left;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Difficulty Badges (for future use) ===== */
+.difficulty-easy { background-color: #4caf50; }
+.difficulty-medium { background-color: #ff9800; }
+.difficulty-hard { background-color: #f44336; }
