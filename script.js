@@ -13,11 +13,8 @@ const maxScoreSpan = document.getElementById("max-score");
 const resultMessage = document.getElementById("result-message");
 const restartButton = document.getElementById("restart-btn");
 const progressBar = document.getElementById("progress");
-const categoryLabel = document.getElementById("category-label"); // NEW: For category display
-const explanationBox = document.getElementById("explanation-box"); // NEW: For answer explanation
 
-// ==================== NURSING QUESTION BANK ====================
-// Structure: Array of Objects with metadata
+// ==================== NURSING QUESTIONS ====================
 const quizQuestions = [
   {
     id: 1,
@@ -30,7 +27,7 @@ const quizQuestions = [
       { text: "110-130 bpm", correct: false },
       { text: "140-160 bpm", correct: false }
     ],
-    explanation: "The normal resting heart rate for adults is 60-100 beats per minute. Athletes may have lower rates (40-60 bpm)."
+    explanation: "The normal resting heart rate for adults is 60-100 beats per minute."
   },
   {
     id: 2,
@@ -43,7 +40,7 @@ const quizQuestions = [
       { text: "Kidney", correct: false },
       { text: "Spleen", correct: false }
     ],
-    explanation: "The pancreas produces insulin, which regulates blood glucose levels. Dysfunction leads to diabetes."
+    explanation: "The pancreas produces insulin, which regulates blood glucose levels."
   },
   {
     id: 3,
@@ -69,7 +66,7 @@ const quizQuestions = [
       { text: "O-", correct: true },
       { text: "B-", correct: false }
     ],
-    explanation: "O- blood lacks A, B, and Rh antigens, making it safe to transfuse to any recipient in emergencies."
+    explanation: "O- blood lacks A, B, and Rh antigens, making it safe to transfuse to any recipient."
   },
   {
     id: 5,
@@ -82,9 +79,9 @@ const quizQuestions = [
       { text: "Epinephrine (EpiPen)", correct: true },
       { text: "Albuterol inhaler", correct: false }
     ],
-    explanation: "Epinephrine is the first-line treatment for anaphylaxis. It reverses airway swelling and hypotension rapidly."
-  }
-    {
+    explanation: "Epinephrine is the first-line treatment for anaphylaxis."
+  },
+  {
     id: 6,
     question: "What does the medical abbreviation 'NPO' stand for?",
     category: "Medical Terminology",
@@ -95,7 +92,7 @@ const quizQuestions = [
       { text: "Nurse Practice Order", correct: false },
       { text: "Normal Patient Observation", correct: false }
     ],
-    explanation: "NPO = 'Nil Per Os' (Latin) meaning 'Nothing by Mouth'. Patients are kept NPO before surgery to prevent aspiration."
+    explanation: "NPO = 'Nil Per Os' (Latin) meaning 'Nothing by Mouth'."
   },
   {
     id: 7,
@@ -108,14 +105,13 @@ const quizQuestions = [
       { text: "When entering any patient room", correct: false },
       { text: "When documenting in charts", correct: false }
     ],
-    explanation: "Gloves are required when there's potential exposure to blood, body fluids, secretions, or contaminated surfaces (Standard Precautions)."
+    explanation: "Gloves are required when there's potential exposure to blood or body fluids."
   }
 ];
 
-// ==================== QUIZ STATE VARIABLES ====================
+// ==================== STATE VARIABLES ====================
 let currentQuestionIndex = 0;
 let score = 0;
-let userAnswers = []; // Track user selections for review
 
 // ==================== INITIALIZATION ====================
 totalQuestionsSpan.textContent = quizQuestions.length;
@@ -125,16 +121,13 @@ maxScoreSpan.textContent = quizQuestions.length;
 startButton.addEventListener("click", startQuiz);
 restartButton.addEventListener("click", restartQuiz);
 
-// ==================== CORE FUNCTIONS ====================
+// ==================== FUNCTIONS ====================
 
 function startQuiz() {
-  // Reset state
   currentQuestionIndex = 0;
   score = 0;
-  userAnswers = [];
   scoreSpan.textContent = score;
   
-  // Switch screens
   startScreen.classList.remove("active");
   resultScreen.classList.remove("active");
   quizScreen.classList.add("active");
@@ -147,85 +140,52 @@ function showQuestion() {
   
   const currentQuestion = quizQuestions[currentQuestionIndex];
   
-  // Update UI with question data
   currentQuestionSpan.textContent = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
   questionText.textContent = currentQuestion.question;
   
-  // Display category (NEW FEATURE)
-  if (categoryLabel) {
-    categoryLabel.textContent = `📚 ${currentQuestion.category} • ${currentQuestion.difficulty.toUpperCase()}`;
-  }
-  
   // Update progress bar
   const progressPercent = ((currentQuestionIndex) / quizQuestions.length) * 100;
-  progressBar.style.width = `${progressPercent}%`;
+  progressBar.style.width = progressPercent + "%";
   
-  // Generate answer buttons
-  currentQuestion.answers.forEach((answer, index) => {
+  // CREATE ANSWER BUTTONS (This was missing!)
+  currentQuestion.answers.forEach(answer => {
     const button = document.createElement("button");
     button.textContent = answer.text;
     button.classList.add("answer-btn");
     button.dataset.correct = answer.correct;
-    button.dataset.index = index;
     button.addEventListener("click", selectAnswer);
     answerContainer.appendChild(button);
   });
 }
 
 function resetState() {
-  // Clear previous answers
+  // Clear previous answer buttons
   while (answerContainer.firstChild) {
     answerContainer.removeChild(answerContainer.firstChild);
-  }
-  
-  // Hide explanation box
-  if (explanationBox) {
-    explanationBox.style.display = "none";
-    explanationBox.textContent = "";
   }
 }
 
 function selectAnswer(e) {
   const selectedBtn = e.target;
   const isCorrect = selectedBtn.dataset.correct === "true";
-  const currentQuestion = quizQuestions[currentQuestionIndex];
   
-  // Save user answer for review
-  userAnswers.push({
-    question: currentQuestion.question,
-    selected: selectedBtn.textContent,
-    correct: currentQuestion.answers.find(a => a.correct).text,
-    isCorrect: isCorrect,
-    explanation: currentQuestion.explanation
-  });
-  
-  // Visual feedback
   if (isCorrect) {
     selectedBtn.classList.add("correct");
     score++;
     scoreSpan.textContent = score;
   } else {
     selectedBtn.classList.add("incorrect");
-    // Highlight the correct answer
-    Array.from(answerContainer.children).forEach(btn => {
-      if (btn.dataset.correct === "true") {
-        btn.classList.add("correct");
-      }
-    });
   }
   
-  // Show explanation (NEW FEATURE)
-  if (explanationBox) {
-    explanationBox.textContent = `💡 ${currentQuestion.explanation}`;
-    explanationBox.style.display = "block";
-  }
-  
-  // Disable all buttons after selection
-  Array.from(answerContainer.children).forEach(btn => {
-    btn.disabled = true;
+  // Show correct answer
+  Array.from(answerContainer.children).forEach(button => {
+    if (button.dataset.correct === "true") {
+      button.classList.add("correct");
+    }
+    button.disabled = true; // Disable all buttons after selection
   });
   
-  // Auto-advance after 2 seconds
+  // Move to next question after 1.5 seconds
   setTimeout(() => {
     currentQuestionIndex++;
     if (currentQuestionIndex < quizQuestions.length) {
@@ -233,7 +193,7 @@ function selectAnswer(e) {
     } else {
       showResults();
     }
-  }, 2000);
+  }, 1500);
 }
 
 function showResults() {
@@ -242,19 +202,14 @@ function showResults() {
   
   finalScoreSpan.textContent = score;
   
-  // Personalized feedback
   const percentage = (score / quizQuestions.length) * 100;
   if (percentage === 100) {
-    resultMessage.textContent = "🏆 Perfect! You're ready for clinicals!";
-  } else if (percentage >= 80) {
-    resultMessage.textContent = "🎉 Excellent! Keep up the great work!";
-  } else if (percentage >= 60) {
-    resultMessage.textContent = "📚 Good effort! Review the explanations below.";
+    resultMessage.textContent = "🏆 Perfect Score!";
+  } else if (percentage >= 70) {
+    resultMessage.textContent = "🎉 Great Job!";
   } else {
-    resultMessage.textContent = "💪 Keep studying! Nursing school is a marathon.";
+    resultMessage.textContent = "📚 Keep Studying!";
   }
-  
-  // TODO: Day 3 - Save results to localStorage
 }
 
 function restartQuiz() {

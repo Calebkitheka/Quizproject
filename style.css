@@ -1,219 +1,181 @@
 /* Basic Reset */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background-color: #e0f7fa; /* Light Blue for Medical feel */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 1rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #e0f7fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  font-family: sans-serif;
 }
 
 .container {
-    background-color: white;
-    border-radius: 1rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 600px;
-    overflow: hidden;
-    position: relative;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 600px;
+  overflow: hidden;
+  position: relative;
 }
 
 /* SCREENS */
 .screen {
-    display: none;
-    padding: 2rem;
-    text-align: center;
+  display: none;
+  padding: 2rem;
+  text-align: center;
 }
 
 .screen.active {
-    display: block;
+  display: block;
 }
 
 /* START SCREEN */
 #start-screen h1 {
-    color: #00796b; /* Teal */
-    margin-bottom: 20px;
-    font-size: 2.5rem;
+  color: #00796b;
+  margin-bottom: 20px;
+  font-size: 2.5rem;
 }
 
 #start-screen p {
-    color: #666;
-    margin-bottom: 30px;
-    font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
 }
 
 .quiz-header {
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
 }
 
 #question-text {
-    color: #333;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    line-height: 1.4;
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
 }
 
 .quiz-info {
-    display: flex;
-    justify-content: space-between;
-    color: #666;
-    font-size: 1rem;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 10px;
 }
 
 .answers-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 25px;
 }
 
 .answer-btn {
-    background-color: #f8f0e5;
-    color: #333;
-    border: 2px solid #eadbc8;
-    border-radius: 10px;
-    padding: 1rem;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.2s;
+  background-color: #f8f0e5;
+  color: #333;
+  border: 2px solid #eadbc8;
+  border-radius: 10px;
+  padding: 1rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
 }
 
 .answer-btn:hover {
-    background-color: #eadbc8;
-    border-color: #dac0ae;
+  background-color: #eadbc8;
+  border-color: #dac0ae;
 }
 
 .answer-btn.correct {
-    background-color: #e6fff0;
-    border-color: #a3f0c4;
-    color: #28a745;
+  background-color: #e6fff0;
+  border-color: #a3f0c4;
+  color: #28a745;
 }
 
 .answer-btn.incorrect {
-    background-color: #fff0f0;
-    border-color: #ffbdbd;
-    color: #dc3545;
+  background-color: #fff0f0;
+  border-color: #ffbdbd;
+  color: #dc3545;
+}
+
+.answer-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .progress-bar {
-    height: 10px;
-    background-color: #f8f0e5;
-    border-radius: 5px;
-    overflow: hidden;
-    margin-top: 20px;
+  height: 10px;
+  background-color: #f8f0e5;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 20px;
 }
 
 .progress {
-    height: 100%;
-    background-color: #00796b;
-    width: 0%;
-    transition: width 0.3s ease;
+  height: 100%;
+  background-color: #00796b;
+  width: 0%;
+  transition: width 0.3s ease;
 }
 
 /* RESULT SCREEN */
 #result-info h1 {
-    color: #00796b;
-    margin-bottom: 30px;
+  color: #00796b;
+  margin-bottom: 30px;
 }
 
-.result-info-box {
-    background-color: #f8f0e5;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 30px;
+.result-info {
+  background-color: #f8f0e5;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
 }
 
-.result-info-box p {
-    font-size: 1.2rem;
-    color: #333;
-    margin-bottom: 1rem;
+.result-info p {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 1rem;
 }
 
 #result-message {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #00796b;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #00796b;
 }
 
 button {
-    background-color: #00796b;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 15px 30px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #00796b;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #004d40;
+  background-color: #004d40;
 }
 
 /* RESPONSIVE DESIGN */
 @media (max-width: 500px) {
-    .screen {
-        padding: 1rem;
-    }
-    #start-screen h1 {
-        font-size: 2rem;
-    }
-    .answer-btn {
-        padding: 12px;
-    }
-    button {
-        padding: 17px 25px;
-        font-size: 1rem;
-    }
-}
-
-/* ===== NEW: Category Label ===== */
-.category-label {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin: 10px auto 20px;
-  display: inline-block;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-}
-
-/* ===== NEW: Explanation Box ===== */
-.explanation-box {
-  background-color: #e3f2fd;
-  border-left: 4px solid #2196f3;
-  padding: 12px 16px;
-  margin: 15px 0;
-  border-radius: 0 8px 8px 0;
-  font-size: 0.95rem;
-  color: #1565c0;
-  display: none; /* Hidden by default */
-  text-align: left;
-  animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+  .screen {
+    padding: 1rem;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  #start-screen h1 {
+    font-size: 2rem;
+  }
+  .answer-btn {
+    padding: 12px;
+  }
+  button {
+    padding: 17px 25px;
+    font-size: 1rem;
   }
 }
-
-/* ===== Difficulty Badges (for future use) ===== */
-.difficulty-easy { background-color: #4caf50; }
-.difficulty-medium { background-color: #ff9800; }
-.difficulty-hard { background-color: #f44336; }

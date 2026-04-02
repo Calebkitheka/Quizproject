@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NurseQuiz - Study App</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
@@ -14,28 +12,27 @@
         
         <!-- START SCREEN -->
         <div id="start-screen" class="screen active">
-            <h1><i class="fa-solid fa-user-nurse"></i> NurseQuiz</h1>
-            <p>Master your nursing knowledge</p>
+            <h1>🩺 NurseQuiz</h1>
+            <p>Test your nursing knowledge</p>
             <button id="start-btn">Start Quiz</button>
         </div>
 
         <!-- QUIZ SCREEN -->
         <div id="quiz-screen" class="screen">
             <div class="quiz-header">
-                <!-- ... existing header ... -->
+                <div class="quiz-info">
+                    <span id="current-question">Question 1</span>
+                    <span>Score: <span id="score">0</span></span>
+                </div>
+                <div class="quiz-info">
+                    <span id="total-questions">7</span>
                 </div>
             </div>
             
             <h2 id="question-text">Question goes here</h2>
             
-            <!-- NEW:  Category label -->
-            <div id="category-label" class="category-label"></div>
-    
-            <!-- NEW: Explanation box -->
-            <div id="explanation-box" class="explanation-box"></div>
-
             <div id="answer-container" class="answers-container">
-                <!-- Buttons injected by JS -->
+                <!-- Answer buttons inserted by JavaScript -->
             </div>
 
             <div class="progress-bar">
@@ -47,13 +44,14 @@
         <div id="result-screen" class="screen">
             <div id="result-info">
                 <h1>Quiz Results</h1>
-                <div class="result-info-box">
-                    <p>You scored <span id="final-score">0</span> out of <span id="max-score">5</span></p>
+                <div class="result-info">
+                    <p>You scored <span id="final-score">0</span> out of <span id="max-score">7</span></p>
                     <p id="result-message">Good work!</p>
                 </div>
                 <button id="restart-btn">Restart Quiz</button>
             </div>
         </div>
+
     </div>
 
     <script src="script.js"></script>
