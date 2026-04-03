@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NurseQuiz - Study App</title>
+    <title>NurseQuiz - NCLEX Prep</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,12 +12,20 @@
         
         <!-- START SCREEN -->
         <div id="start-screen" class="screen active">
-          <h1>🩺 NurseQuiz</h1>
-          <p>Test your nursing knowledge</p>
-          <!-- NEW: High Score Display -->
-          <p id="high-score-display" class="high-score">High Score: 0</p>
-          <button id="start-btn">Start Quiz</button>
+            <h1>🩺 NurseQuiz</h1>
+            <p>Master your nursing knowledge for NCLEX</p>
+            
+            <!-- NEW: Streak Display -->
+            <div id="streak-display" class="streak-box">
+                🔥 Streak: <span id="streak-count">0</span> days
+            </div>
+            
+            <!-- High Score Display -->
+            <p id="high-score-display" class="high-score">🏆 High Score: 0</p>
+            
+            <button id="start-btn">Start Quiz</button>
         </div>
+
         <!-- QUIZ SCREEN -->
         <div id="quiz-screen" class="screen">
             <div class="quiz-header">
@@ -32,9 +40,13 @@
             
             <h2 id="question-text">Question goes here</h2>
             
+            <div id="category-label" class="category-label"></div>
+            
             <div id="answer-container" class="answers-container">
                 <!-- Answer buttons inserted by JavaScript -->
             </div>
+
+            <div id="explanation-box" class="explanation-box"></div>
 
             <div class="progress-bar">
                 <div id="progress" class="progress"></div>

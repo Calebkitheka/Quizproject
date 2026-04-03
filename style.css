@@ -12,7 +12,7 @@ body {
   align-items: center;
   min-height: 100vh;
   padding: 1rem;
-  font-family: sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .container {
@@ -45,8 +45,40 @@ body {
 
 #start-screen p {
   color: #666;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   font-size: 1.1rem;
+}
+
+/* ===== NEW: Streak Box ===== */
+.streak-box {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  display: inline-block;
+  box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* High Score Display */
+.high-score {
+  background-color: #fff3e0;
+  color: #e65100;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  display: inline-block;
+  border: 2px solid #ffe0b2;
 }
 
 .quiz-header {
@@ -58,6 +90,19 @@ body {
   font-size: 1.5rem;
   margin-bottom: 1rem;
   line-height: 1.4;
+}
+
+/* Category Label */
+.category-label {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 10px auto 20px;
+  display: inline-block;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
 .quiz-info {
@@ -84,6 +129,7 @@ body {
   cursor: pointer;
   text-align: left;
   transition: all 0.2s;
+  font-size: 1rem;
 }
 
 .answer-btn:hover {
@@ -106,6 +152,31 @@ body {
 .answer-btn:disabled {
   cursor: not-allowed;
   opacity: 0.7;
+}
+
+/* Explanation Box */
+.explanation-box {
+  background-color: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  padding: 12px 16px;
+  margin: 15px 0;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.95rem;
+  color: #1565c0;
+  display: none;
+  text-align: left;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .progress-bar {
@@ -178,17 +249,8 @@ button:hover {
     padding: 17px 25px;
     font-size: 1rem;
   }
-}
-
-/* ===== NEW: High Score Display ===== */
-.high-score {
-  background-color: #fff3e0;
-  color: #e65100;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1.1rem;
-  margin-bottom: 20px;
-  display: inline-block;
-  border: 2px solid #ffe0b2;
+  .streak-box {
+    font-size: 1.1rem;
+    padding: 12px 20px;
+  }
 }
