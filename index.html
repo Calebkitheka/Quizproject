@@ -15,7 +15,7 @@
             <h1>🩺 NurseQuiz</h1>
             <p>Master your nursing knowledge for NCLEX</p>
             
-            <!-- NEW: Streak Display -->
+            <!-- Streak Display -->
             <div id="streak-display" class="streak-box">
                 🔥 Streak: <span id="streak-count">0</span> days
             </div>
@@ -34,7 +34,7 @@
                     <span>Score: <span id="score">0</span></span>
                 </div>
                 <div class="quiz-info">
-                    <span id="total-questions">7</span>
+                    <span id="total-questions">50</span>
                 </div>
             </div>
             
@@ -58,11 +58,25 @@
             <div id="result-info">
                 <h1>Quiz Results</h1>
                 <div class="result-info">
-                    <p>You scored <span id="final-score">0</span> out of <span id="max-score">7</span></p>
+                    <p>You scored <span id="final-score">0</span> out of <span id="max-score">50</span></p>
                     <p id="result-message">Good work!</p>
                 </div>
-                <button id="restart-btn">Restart Quiz</button>
+                <!-- NEW: Review Button -->
+                <button id="review-btn" class="review-btn">📖 Review Answers</button>
+                <button id="restart-btn" class="restart-btn">🔄 Restart Quiz</button>
             </div>
+        </div>
+
+        <!-- NEW: REVIEW SCREEN -->
+        <div id="review-screen" class="screen">
+            <h1>📖 Question Review</h1>
+            <p class="review-subtitle">Review all questions and explanations</p>
+            
+            <div id="review-container" class="review-container">
+                <!-- Review items inserted by JavaScript -->
+            </div>
+            
+            <button id="back-to-home-btn" class="home-btn">🏠 Back to Home</button>
         </div>
 
     </div>

@@ -2,6 +2,7 @@
 const startScreen = document.getElementById("start-screen");
 const quizScreen = document.getElementById("quiz-screen");
 const resultScreen = document.getElementById("result-screen");
+const reviewScreen = document.getElementById("review-screen"); // NEW
 const startButton = document.getElementById("start-btn");
 const questionText = document.getElementById("question-text");
 const answerContainer = document.getElementById("answer-container");
@@ -12,14 +13,17 @@ const finalScoreSpan = document.getElementById("final-score");
 const maxScoreSpan = document.getElementById("max-score");
 const resultMessage = document.getElementById("result-message");
 const restartButton = document.getElementById("restart-btn");
+const reviewButton = document.getElementById("review-btn"); // NEW
+const backToHomeBtn = document.getElementById("back-to-home-btn"); // NEW
 const progressBar = document.getElementById("progress");
 const highScoreDisplay = document.getElementById("high-score-display");
 const streakDisplay = document.getElementById("streak-display");
 const streakCount = document.getElementById("streak-count");
 const categoryLabel = document.getElementById("category-label");
 const explanationBox = document.getElementById("explanation-box");
+const reviewContainer = document.getElementById("review-container"); // NEW
 
-// ==================== NURSING QUESTIONS (57 Total) ====================
+// ==================== NURSING QUESTIONS (50 Total) ====================
 const quizQuestions = [
   {
     id: 1,
@@ -676,6 +680,7 @@ const quizQuestions = [
 // ==================== STATE VARIABLES ====================
 let currentQuestionIndex = 0;
 let score = 0;
+let userAnswers = []; // Track user answers for review
 
 // ==================== INITIALIZATION ====================
 totalQuestionsSpan.textContent = quizQuestions.length;
@@ -688,19 +693,23 @@ loadStreak();
 // ==================== EVENT LISTENERS ====================
 startButton.addEventListener("click", startQuiz);
 restartButton.addEventListener("click", restartQuiz);
+reviewButton.addEventListener("click", showReview); // NEW
+backToHomeBtn.addEventListener("click", goHome); // NEW
 
 // ==================== CORE FUNCTIONS ====================
 
 function startQuiz() {
   currentQuestionIndex = 0;
   score = 0;
+  userAnswers = []; // Reset user answers
   scoreSpan.textContent = score;
   
   startScreen.classList.remove("active");
   resultScreen.classList.remove("active");
+  reviewScreen.classList.remove("active");
   quizScreen.classList.add("active");
   
-  // Update streak when quiz starts (counts as studying today)
+  // Update streak when quiz starts
   updateStreak();
   
   showQuestion();
@@ -748,6 +757,17 @@ function selectAnswer(e) {
   const selectedBtn = e.target;
   const isCorrect = selectedBtn.dataset.correct === "true";
   const currentQuestion = quizQuestions[currentQuestionIndex];
+  
+  // Save user answer for review
+  userAnswers.push({
+    questionId: currentQuestion.id,
+    question: currentQuestion.question,
+    category: currentQuestion.category,
+    selectedAnswer: selectedBtn.textContent,
+    correctAnswer: currentQuestion.answers.find(a => a.correct).text,
+    isCorrect: isCorrect,
+    explanation: currentQuestion.explanation
+  });
   
   if (isCorrect) {
     selectedBtn.classList.add("correct");
@@ -809,6 +829,50 @@ function restartQuiz() {
   startScreen.classList.add("active");
 }
 
+// ==================== NEW: REVIEW FUNCTIONS (DAY 5) ====================
+
+function showReview() {
+  resultScreen.classList.remove("active");
+  reviewScreen.classList.add("active");
+  
+  // Clear previous review items
+  reviewContainer.innerHTML = "";
+  
+  // Generate review items for all questions
+  userAnswers.forEach((answer, index) => {
+    const reviewItem = document.createElement("div");
+    reviewItem.classList.add("review-item");
+    reviewItem.classList.add(answer.isCorrect ? "correct" : "incorrect");
+    
+    reviewItem.innerHTML = `
+      <div class="review-status ${answer.isCorrect ? "correct" : "incorrect"}">
+        ${answer.isCorrect ? "✓ Correct" : "✗ Incorrect"}
+      </div>
+      <div class="review-question">
+        Q${index + 1}: ${answer.question}
+      </div>
+      <div class="review-answer your-answer">
+        Your Answer: ${answer.selectedAnswer}
+      </div>
+      ${!answer.isCorrect ? `
+      <div class="review-answer correct-answer">
+        Correct Answer: ${answer.correctAnswer}
+      </div>
+      ` : ''}
+      <div class="review-explanation">
+        💡 ${answer.explanation}
+      </div>
+    `;
+    
+    reviewContainer.appendChild(reviewItem);
+  });
+}
+
+function goHome() {
+  reviewScreen.classList.remove("active");
+  startScreen.classList.add("active");
+}
+
 // ==================== LOCAL STORAGE FUNCTIONS ====================
 
 function saveHighScore(currentScore) {
@@ -830,7 +894,7 @@ function loadHighScore() {
   }
 }
 
-// ==================== STREAK SYSTEM (DAY 4 FEATURE) ====================
+// ==================== STREAK SYSTEM ====================
 
 function updateStreak() {
   const today = new Date().toDateString();
@@ -842,18 +906,14 @@ function updateStreak() {
     yesterday.setDate(yesterday.getDate() - 1);
     
     if (lastStudyDate === yesterday.toDateString()) {
-      // Studied yesterday, increment streak
       currentStreak++;
     } else if (lastStudyDate !== today) {
-      // Didn't study yesterday, reset streak (but start at 1 for today)
       currentStreak = 1;
     }
     
-    // Save new streak and today's date
     localStorage.setItem("currentStreak", currentStreak);
     localStorage.setItem("lastStudyDate", today);
     
-    // Update display
     if (streakCount) {
       streakCount.textContent = currentStreak;
     }
