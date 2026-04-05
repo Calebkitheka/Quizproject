@@ -81,6 +81,39 @@ body {
   border: 2px solid #ffe0b2;
 }
 
+/* ===== NEW: Category Selection (Day 6) ===== */
+.category-selection {
+  margin-bottom: 20px;
+}
+
+.category-selection label {
+  display: block;
+  color: #666;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.category-selection select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #00796b;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.category-selection select:hover {
+  border-color: #004d40;
+}
+
+.category-selection select:focus {
+  outline: none;
+  border-color: #004d40;
+  box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.2);
+}
+
 .quiz-header {
   margin-bottom: 2rem;
 }
@@ -236,7 +269,6 @@ button:hover {
   background-color: #004d40;
 }
 
-/* NEW: Review Button */
 .review-btn {
   background-color: #667eea;
 }
@@ -254,7 +286,7 @@ button:hover {
   margin-top: 20px;
 }
 
-/* ===== NEW: REVIEW SCREEN STYLES ===== */
+/* REVIEW SCREEN STYLES */
 #review-screen h1 {
   color: #00796b;
   margin-bottom: 10px;

@@ -2,7 +2,7 @@
 const startScreen = document.getElementById("start-screen");
 const quizScreen = document.getElementById("quiz-screen");
 const resultScreen = document.getElementById("result-screen");
-const reviewScreen = document.getElementById("review-screen"); // NEW
+const reviewScreen = document.getElementById("review-screen");
 const startButton = document.getElementById("start-btn");
 const questionText = document.getElementById("question-text");
 const answerContainer = document.getElementById("answer-container");
@@ -13,15 +13,15 @@ const finalScoreSpan = document.getElementById("final-score");
 const maxScoreSpan = document.getElementById("max-score");
 const resultMessage = document.getElementById("result-message");
 const restartButton = document.getElementById("restart-btn");
-const reviewButton = document.getElementById("review-btn"); // NEW
-const backToHomeBtn = document.getElementById("back-to-home-btn"); // NEW
+const reviewButton = document.getElementById("review-btn");
+const backToHomeBtn = document.getElementById("back-to-home-btn");
 const progressBar = document.getElementById("progress");
 const highScoreDisplay = document.getElementById("high-score-display");
-const streakDisplay = document.getElementById("streak-display");
 const streakCount = document.getElementById("streak-count");
 const categoryLabel = document.getElementById("category-label");
 const explanationBox = document.getElementById("explanation-box");
-const reviewContainer = document.getElementById("review-container"); // NEW
+const reviewContainer = document.getElementById("review-container");
+const categorySelect = document.getElementById("category-select"); // NEW: Day 6
 
 // ==================== NURSING QUESTIONS (50 Total) ====================
 const quizQuestions = [
@@ -54,7 +54,7 @@ const quizQuestions = [
   {
     id: 3,
     question: "What does the acronym 'ABC' stand for in emergency nursing?",
-    category: "Emergency Care",
+    category: "Patient Safety",
     difficulty: "medium",
     answers: [
       { text: "Airway, Breathing, Circulation", correct: true },
@@ -67,7 +67,7 @@ const quizQuestions = [
   {
     id: 4,
     question: "Which blood type is known as the 'universal donor'?",
-    category: "Hematology",
+    category: "Assessment",
     difficulty: "medium",
     answers: [
       { text: "A+", correct: false },
@@ -80,7 +80,7 @@ const quizQuestions = [
   {
     id: 5,
     question: "What is the first-line treatment for anaphylaxis?",
-    category: "Pharmacology",
+    category: "Medication Safety",
     difficulty: "hard",
     answers: [
       { text: "Antihistamines (Benadryl)", correct: false },
@@ -93,7 +93,7 @@ const quizQuestions = [
   {
     id: 6,
     question: "What does the medical abbreviation 'NPO' stand for?",
-    category: "Medical Terminology",
+    category: "Nursing Process",
     difficulty: "easy",
     answers: [
       { text: "No Prescription Orders", correct: false },
@@ -379,7 +379,7 @@ const quizQuestions = [
   {
     id: 28,
     question: "Which documentation practice is LEGALLY required?",
-    category: "Documentation",
+    category: "Nursing Process",
     difficulty: "medium",
     answers: [
       { text: "Using abbreviations to save time", correct: false },
@@ -392,7 +392,7 @@ const quizQuestions = [
   {
     id: 29,
     question: "A nurse makes a documentation error. What is the CORRECT action?",
-    category: "Documentation",
+    category: "Nursing Process",
     difficulty: "easy",
     answers: [
       { text: "Use white-out to cover the error", correct: false },
@@ -405,7 +405,7 @@ const quizQuestions = [
   {
     id: 30,
     question: "Which situation requires an incident report?",
-    category: "Legal/Ethical",
+    category: "Patient Safety",
     difficulty: "medium",
     answers: [
       { text: "A patient refuses a medication", correct: false },
@@ -418,7 +418,7 @@ const quizQuestions = [
   {
     id: 31,
     question: "A patient asks the nurse not to document a sensitive disclosure. What is the BEST response?",
-    category: "Legal/Ethical",
+    category: "Communication",
     difficulty: "hard",
     answers: [
       { text: "'I won't write it down if you prefer.'", correct: false },
@@ -431,7 +431,7 @@ const quizQuestions = [
   {
     id: 32,
     question: "Which action violates patient confidentiality under HIPAA?",
-    category: "Legal/Ethical",
+    category: "Communication",
     difficulty: "medium",
     answers: [
       { text: "Discussing a patient's case with the care team", correct: false },
@@ -444,7 +444,7 @@ const quizQuestions = [
   {
     id: 33,
     question: "Which intervention BEST promotes sleep for a hospitalized patient?",
-    category: "Basic Care",
+    category: "Patient Safety",
     difficulty: "easy",
     answers: [
       { text: "Cluster care activities to allow uninterrupted rest", correct: true },
@@ -457,7 +457,7 @@ const quizQuestions = [
   {
     id: 34,
     question: "A patient reports pain rated 7/10. What is the nurse's PRIORITY action?",
-    category: "Basic Care",
+    category: "Assessment",
     difficulty: "medium",
     answers: [
       { text: "Document the pain rating", correct: false },
@@ -470,7 +470,7 @@ const quizQuestions = [
   {
     id: 35,
     question: "Which action is MOST important when assisting a patient with oral care?",
-    category: "Basic Care",
+    category: "Patient Safety",
     difficulty: "medium",
     answers: [
       { text: "Use lemon-glycerin swabs", correct: false },
@@ -483,7 +483,7 @@ const quizQuestions = [
   {
     id: 36,
     question: "A patient is at risk for aspiration. Which intervention is MOST appropriate?",
-    category: "Basic Care",
+    category: "Patient Safety",
     difficulty: "medium",
     answers: [
       { text: "Offer thin liquids", correct: false },
@@ -496,7 +496,7 @@ const quizQuestions = [
   {
     id: 37,
     question: "Which finding indicates effective bowel management for a constipated patient?",
-    category: "Basic Care",
+    category: "Assessment",
     difficulty: "easy",
     answers: [
       { text: "Patient reports abdominal pain", correct: false },
@@ -522,7 +522,7 @@ const quizQuestions = [
   {
     id: 39,
     question: "A patient asks about smoking cessation. What is the nurse's BEST initial response?",
-    category: "Health Promotion",
+    category: "Communication",
     difficulty: "easy",
     answers: [
       { text: "'You should quit immediately.'", correct: false },
@@ -561,7 +561,7 @@ const quizQuestions = [
   {
     id: 42,
     question: "Which statement indicates a patient understands medication adherence?",
-    category: "Health Promotion",
+    category: "Medication Safety",
     difficulty: "easy",
     answers: [
       { text: "'I'll skip doses if I feel better.'", correct: false },
@@ -574,7 +574,7 @@ const quizQuestions = [
   {
     id: 43,
     question: "Which vital sign finding requires IMMEDIATE reporting?",
-    category: "Assessment",
+    category: "Vital Signs",
     difficulty: "medium",
     answers: [
       { text: "Temperature 99.1°F (37.3°C)", correct: false },
@@ -587,7 +587,7 @@ const quizQuestions = [
   {
     id: 44,
     question: "When measuring blood pressure, what error causes a FALSELY HIGH reading?",
-    category: "Assessment",
+    category: "Vital Signs",
     difficulty: "hard",
     answers: [
       { text: "Cuff too large for the arm", correct: false },
@@ -680,10 +680,10 @@ const quizQuestions = [
 // ==================== STATE VARIABLES ====================
 let currentQuestionIndex = 0;
 let score = 0;
-let userAnswers = []; // Track user answers for review
+let userAnswers = [];
+let filteredQuestions = []; // NEW: Day 6 - Store filtered questions
 
 // ==================== INITIALIZATION ====================
-totalQuestionsSpan.textContent = quizQuestions.length;
 maxScoreSpan.textContent = quizQuestions.length;
 
 // Load data when page loads
@@ -693,46 +693,53 @@ loadStreak();
 // ==================== EVENT LISTENERS ====================
 startButton.addEventListener("click", startQuiz);
 restartButton.addEventListener("click", restartQuiz);
-reviewButton.addEventListener("click", showReview); // NEW
-backToHomeBtn.addEventListener("click", goHome); // NEW
+reviewButton.addEventListener("click", showReview);
+backToHomeBtn.addEventListener("click", goHome);
 
 // ==================== CORE FUNCTIONS ====================
 
 function startQuiz() {
   currentQuestionIndex = 0;
   score = 0;
-  userAnswers = []; // Reset user answers
+  userAnswers = [];
   scoreSpan.textContent = score;
+  
+  // NEW: Day 6 - Filter questions by selected category
+  const selectedCategory = categorySelect.value;
+  if (selectedCategory === "all") {
+    filteredQuestions = quizQuestions;
+  } else {
+    filteredQuestions = quizQuestions.filter(q => q.category === selectedCategory);
+  }
+  
+  // Update total questions display
+  totalQuestionsSpan.textContent = filteredQuestions.length;
+  maxScoreSpan.textContent = filteredQuestions.length;
   
   startScreen.classList.remove("active");
   resultScreen.classList.remove("active");
   reviewScreen.classList.remove("active");
   quizScreen.classList.add("active");
   
-  // Update streak when quiz starts
   updateStreak();
-  
   showQuestion();
 }
 
 function showQuestion() {
   resetState();
   
-  const currentQuestion = quizQuestions[currentQuestionIndex];
+  const currentQuestion = filteredQuestions[currentQuestionIndex];
   
-  currentQuestionSpan.textContent = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+  currentQuestionSpan.textContent = `Question ${currentQuestionIndex + 1} of ${filteredQuestions.length}`;
   questionText.textContent = currentQuestion.question;
   
-  // Display category
   if (categoryLabel) {
     categoryLabel.textContent = `📚 ${currentQuestion.category} • ${currentQuestion.difficulty.toUpperCase()}`;
   }
   
-  // Update progress bar
-  const progressPercent = ((currentQuestionIndex) / quizQuestions.length) * 100;
+  const progressPercent = ((currentQuestionIndex) / filteredQuestions.length) * 100;
   progressBar.style.width = progressPercent + "%";
   
-  // Create answer buttons
   currentQuestion.answers.forEach(answer => {
     const button = document.createElement("button");
     button.textContent = answer.text;
@@ -756,9 +763,8 @@ function resetState() {
 function selectAnswer(e) {
   const selectedBtn = e.target;
   const isCorrect = selectedBtn.dataset.correct === "true";
-  const currentQuestion = quizQuestions[currentQuestionIndex];
+  const currentQuestion = filteredQuestions[currentQuestionIndex];
   
-  // Save user answer for review
   userAnswers.push({
     questionId: currentQuestion.id,
     question: currentQuestion.question,
@@ -777,7 +783,6 @@ function selectAnswer(e) {
     selectedBtn.classList.add("incorrect");
   }
   
-  // Show correct answer
   Array.from(answerContainer.children).forEach(button => {
     if (button.dataset.correct === "true") {
       button.classList.add("correct");
@@ -785,16 +790,14 @@ function selectAnswer(e) {
     button.disabled = true;
   });
   
-  // Show explanation
   if (explanationBox) {
     explanationBox.textContent = `💡 ${currentQuestion.explanation}`;
     explanationBox.style.display = "block";
   }
   
-  // Move to next question after 2 seconds
   setTimeout(() => {
     currentQuestionIndex++;
-    if (currentQuestionIndex < quizQuestions.length) {
+    if (currentQuestionIndex < filteredQuestions.length) {
       showQuestion();
     } else {
       showResults();
@@ -808,11 +811,9 @@ function showResults() {
   
   finalScoreSpan.textContent = score;
   
-  // Save High Score
   saveHighScore(score);
   
-  // Personalized feedback
-  const percentage = (score / quizQuestions.length) * 100;
+  const percentage = (score / filteredQuestions.length) * 100;
   if (percentage === 100) {
     resultMessage.textContent = "🏆 Perfect! You're ready for clinicals!";
   } else if (percentage >= 80) {
@@ -829,16 +830,14 @@ function restartQuiz() {
   startScreen.classList.add("active");
 }
 
-// ==================== NEW: REVIEW FUNCTIONS (DAY 5) ====================
+// ==================== REVIEW FUNCTIONS ====================
 
 function showReview() {
   resultScreen.classList.remove("active");
   reviewScreen.classList.add("active");
   
-  // Clear previous review items
   reviewContainer.innerHTML = "";
   
-  // Generate review items for all questions
   userAnswers.forEach((answer, index) => {
     const reviewItem = document.createElement("div");
     reviewItem.classList.add("review-item");

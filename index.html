@@ -23,6 +23,22 @@
             <!-- High Score Display -->
             <p id="high-score-display" class="high-score">🏆 High Score: 0</p>
             
+            <!-- NEW: Category Selection (Day 6) -->
+            <div id="category-selection" class="category-selection">
+                <label for="category-select">Choose Topic:</label>
+                <select id="category-select">
+                    <option value="all">📚 All Categories</option>
+                    <option value="Vital Signs">Vital Signs</option>
+                    <option value="Anatomy & Physiology">Anatomy & Physiology</option>
+                    <option value="Nursing Process">Nursing Process</option>
+                    <option value="Patient Safety">Patient Safety</option>
+                    <option value="Infection Control">Infection Control</option>
+                    <option value="Communication">Communication</option>
+                    <option value="Medication Safety">Medication Safety</option>
+                    <option value="Assessment">Assessment</option>
+                </select>
+            </div>
+            
             <button id="start-btn">Start Quiz</button>
         </div>
 
@@ -61,13 +77,12 @@
                     <p>You scored <span id="final-score">0</span> out of <span id="max-score">50</span></p>
                     <p id="result-message">Good work!</p>
                 </div>
-                <!-- NEW: Review Button -->
                 <button id="review-btn" class="review-btn">📖 Review Answers</button>
                 <button id="restart-btn" class="restart-btn">🔄 Restart Quiz</button>
             </div>
         </div>
 
-        <!-- NEW: REVIEW SCREEN -->
+        <!-- REVIEW SCREEN (Day 5) -->
         <div id="review-screen" class="screen">
             <h1>📖 Question Review</h1>
             <p class="review-subtitle">Review all questions and explanations</p>
