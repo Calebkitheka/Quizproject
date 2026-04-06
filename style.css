@@ -81,7 +81,7 @@ body {
   border: 2px solid #ffe0b2;
 }
 
-/* ===== NEW: Category Selection (Day 6) ===== */
+/* Category Selection (Day 6) */
 .category-selection {
   margin-bottom: 20px;
 }
@@ -144,6 +144,30 @@ body {
   color: #666;
   font-size: 1rem;
   margin-bottom: 10px;
+}
+
+/* ===== NEW: Timer Display (Day 7) ===== */
+.timer-display {
+  background-color: #fff3e0;
+  color: #e65100;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 10px;
+  border: 2px solid #ffe0b2;
+}
+
+.timer-display.warning {
+  background-color: #ffebee;
+  color: #c62828;
+  border-color: #ef9a9a;
+  animation: blink 0.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
 .answers-container {

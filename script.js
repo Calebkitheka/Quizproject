@@ -21,7 +21,8 @@ const streakCount = document.getElementById("streak-count");
 const categoryLabel = document.getElementById("category-label");
 const explanationBox = document.getElementById("explanation-box");
 const reviewContainer = document.getElementById("review-container");
-const categorySelect = document.getElementById("category-select"); // NEW: Day 6
+const categorySelect = document.getElementById("category-select");
+const timerDisplay = document.getElementById("timer"); // NEW: Day 7
 
 // ==================== NURSING QUESTIONS (50 Total) ====================
 const quizQuestions = [
@@ -681,7 +682,10 @@ const quizQuestions = [
 let currentQuestionIndex = 0;
 let score = 0;
 let userAnswers = [];
-let filteredQuestions = []; // NEW: Day 6 - Store filtered questions
+let filteredQuestions = [];
+let timerInterval = null; // NEW: Day 7 - Timer interval
+let timeLeft = 15; // NEW: Day 7 - Time per question (seconds)
+const TIME_PER_QUESTION = 15; // NEW: Day 7 - Constant for time limit
 
 // ==================== INITIALIZATION ====================
 maxScoreSpan.textContent = quizQuestions.length;
@@ -704,7 +708,7 @@ function startQuiz() {
   userAnswers = [];
   scoreSpan.textContent = score;
   
-  // NEW: Day 6 - Filter questions by selected category
+  // Filter questions by selected category
   const selectedCategory = categorySelect.value;
   if (selectedCategory === "all") {
     filteredQuestions = quizQuestions;
@@ -740,6 +744,9 @@ function showQuestion() {
   const progressPercent = ((currentQuestionIndex) / filteredQuestions.length) * 100;
   progressBar.style.width = progressPercent + "%";
   
+  // NEW: Day 7 - Start timer for this question
+  startTimer();
+  
   currentQuestion.answers.forEach(answer => {
     const button = document.createElement("button");
     button.textContent = answer.text;
@@ -749,6 +756,85 @@ function showQuestion() {
     answerContainer.appendChild(button);
   });
 }
+
+// ==================== NEW: TIMER FUNCTIONS (Day 7) ====================
+
+function startTimer() {
+  // Clear any existing timer
+  if (timerInterval) {
+    clearInterval(timerInterval);
+  }
+  
+  // Reset time
+  timeLeft = TIME_PER_QUESTION;
+  timerDisplay.textContent = timeLeft;
+  timerDisplay.classList.remove("warning");
+  
+  // Start countdown
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    timerDisplay.textContent = timeLeft;
+    
+    // Add warning style when time is low (5 seconds or less)
+    if (timeLeft <= 5) {
+      timerDisplay.classList.add("warning");
+    }
+    
+    // Auto-advance when time runs out
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      handleTimeOut();
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+
+function handleTimeOut() {
+  // Mark question as incorrect
+  const currentQuestion = filteredQuestions[currentQuestionIndex];
+  
+  userAnswers.push({
+    questionId: currentQuestion.id,
+    question: currentQuestion.question,
+    category: currentQuestion.category,
+    selectedAnswer: "Time Out",
+    correctAnswer: currentQuestion.answers.find(a => a.correct).text,
+    isCorrect: false,
+    explanation: currentQuestion.explanation
+  });
+  
+  // Show correct answer
+  Array.from(answerContainer.children).forEach(button => {
+    if (button.dataset.correct === "true") {
+      button.classList.add("correct");
+    }
+    button.disabled = true;
+  });
+  
+  // Show explanation
+  if (explanationBox) {
+    explanationBox.textContent = `⏰ Time's up! 💡 ${currentQuestion.explanation}`;
+    explanationBox.style.display = "block";
+  }
+  
+  // Move to next question after 2 seconds
+  setTimeout(() => {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < filteredQuestions.length) {
+      showQuestion();
+    } else {
+      showResults();
+    }
+  }, 2000);
+}
+
+// ==================== ANSWER SELECTION ====================
 
 function resetState() {
   while (answerContainer.firstChild) {
@@ -761,6 +847,9 @@ function resetState() {
 }
 
 function selectAnswer(e) {
+  // Stop timer when answer is selected
+  stopTimer();
+  
   const selectedBtn = e.target;
   const isCorrect = selectedBtn.dataset.correct === "true";
   const currentQuestion = filteredQuestions[currentQuestionIndex];
@@ -783,6 +872,7 @@ function selectAnswer(e) {
     selectedBtn.classList.add("incorrect");
   }
   
+  // Show correct answer
   Array.from(answerContainer.children).forEach(button => {
     if (button.dataset.correct === "true") {
       button.classList.add("correct");
@@ -790,11 +880,13 @@ function selectAnswer(e) {
     button.disabled = true;
   });
   
+  // Show explanation
   if (explanationBox) {
     explanationBox.textContent = `💡 ${currentQuestion.explanation}`;
     explanationBox.style.display = "block";
   }
   
+  // Move to next question after 2 seconds
   setTimeout(() => {
     currentQuestionIndex++;
     if (currentQuestionIndex < filteredQuestions.length) {
@@ -806,6 +898,9 @@ function selectAnswer(e) {
 }
 
 function showResults() {
+  // Stop timer when quiz ends
+  stopTimer();
+  
   quizScreen.classList.remove("active");
   resultScreen.classList.add("active");
   
