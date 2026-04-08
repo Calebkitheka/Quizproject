@@ -146,7 +146,7 @@ body {
   margin-bottom: 10px;
 }
 
-/* ===== NEW: Timer Display (Day 7) ===== */
+/* Timer Display (Day 7) */
 .timer-display {
   background-color: #fff3e0;
   color: #e65100;
@@ -293,6 +293,16 @@ button:hover {
   background-color: #004d40;
 }
 
+/* NEW: Stats Button (Day 8) */
+.stats-btn {
+  background-color: #667eea;
+  margin-bottom: 15px;
+}
+
+.stats-btn:hover {
+  background-color: #5a6fd6;
+}
+
 .review-btn {
   background-color: #667eea;
 }
@@ -394,6 +404,46 @@ button:hover {
   color: #dc3545;
 }
 
+/* ===== NEW: STATISTICS SCREEN (Day 8) ===== */
+#stats-screen h1 {
+  color: #00796b;
+  margin-bottom: 10px;
+}
+
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 15px 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.stat-card h3 {
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+  opacity: 0.9;
+}
+
+.stat-card p {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.chart-container {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  height: 300px;
+}
+
 /* Scrollbar Styling */
 .review-container::-webkit-scrollbar {
   width: 8px;
@@ -430,5 +480,11 @@ button:hover {
   }
   .review-container {
     max-height: 300px;
+  }
+  .stats-summary {
+    grid-template-columns: 1fr;
+  }
+  .chart-container {
+    height: 250px;
   }
 }
