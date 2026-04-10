@@ -1,11 +1,12 @@
-// ==================== DOM ELEMENTS ====================
+// ==================== DOM ELEMENTS (FIXED: No spaces in IDs) ====================
 const startScreen = document.getElementById("start-screen");
 const quizScreen = document.getElementById("quiz-screen");
 const resultScreen = document.getElementById("result-screen");
 const reviewScreen = document.getElementById("review-screen");
-const statsScreen = document.getElementById("stats-screen"); // NEW: Day 8
+const statsScreen = document.getElementById("stats-screen");
 const startButton = document.getElementById("start-btn");
-const statsButton = document.getElementById("stats-btn"); // NEW: Day 8
+const statsButton = document.getElementById("stats-btn");
+const themeToggle = document.getElementById("theme-toggle"); // NEW: Day 9
 const questionText = document.getElementById("question-text");
 const answerContainer = document.getElementById("answer-container");
 const currentQuestionSpan = document.getElementById("current-question");
@@ -17,7 +18,7 @@ const resultMessage = document.getElementById("result-message");
 const restartButton = document.getElementById("restart-btn");
 const reviewButton = document.getElementById("review-btn");
 const backToHomeBtn = document.getElementById("back-to-home-btn");
-const backToHomeFromStats = document.getElementById("back-to-home-from-stats"); // NEW
+const backToHomeFromStats = document.getElementById("back-to-home-from-stats");
 const progressBar = document.getElementById("progress");
 const highScoreDisplay = document.getElementById("high-score-display");
 const streakCount = document.getElementById("streak-count");
@@ -27,12 +28,12 @@ const reviewContainer = document.getElementById("review-container");
 const categorySelect = document.getElementById("category-select");
 const timerDisplay = document.getElementById("timer");
 
-// Statistics Elements (Day 8)
+// Statistics Elements
 const totalQuizzesEl = document.getElementById("total-quizzes");
 const averageScoreEl = document.getElementById("average-score");
 const bestScoreEl = document.getElementById("best-score");
 
-// ==================== NURSING QUESTIONS (50 Total) ====================
+// ==================== NURSING QUESTIONS (Sample of 10 for brevity, use your 50) ====================
 const quizQuestions = [
   {
     id: 1,
@@ -174,7 +175,7 @@ let filteredQuestions = [];
 let timerInterval = null;
 let timeLeft = 15;
 const TIME_PER_QUESTION = 15;
-let performanceChart = null; // NEW: Day 8 - Chart instance
+let performanceChart = null;
 
 // ==================== INITIALIZATION ====================
 maxScoreSpan.textContent = quizQuestions.length;
@@ -182,15 +183,17 @@ maxScoreSpan.textContent = quizQuestions.length;
 // Load data when page loads
 loadHighScore();
 loadStreak();
-loadStatistics(); // NEW: Day 8
+loadStatistics();
+loadTheme(); // NEW: Day 9
 
-// ==================== EVENT LISTENERS ====================
+// ==================== EVENT LISTENERS (FIXED: Commas not dots) ====================
 startButton.addEventListener("click", startQuiz);
-statsButton.addEventListener("click", showStatistics); // NEW: Day 8
+statsButton.addEventListener("click", showStatistics);
+themeToggle.addEventListener("click", toggleTheme); // NEW: Day 9
 restartButton.addEventListener("click", restartQuiz);
 reviewButton.addEventListener("click", showReview);
 backToHomeBtn.addEventListener("click", goHome);
-backToHomeFromStats.addEventListener("click", goHomeFromStats); // NEW: Day 8
+backToHomeFromStats.addEventListener("click", goHomeFromStats);
 
 // ==================== CORE FUNCTIONS ====================
 
@@ -200,7 +203,6 @@ function startQuiz() {
   userAnswers = [];
   scoreSpan.textContent = score;
   
-  // Filter questions by selected category
   const selectedCategory = categorySelect.value;
   if (selectedCategory === "all") {
     filteredQuestions = quizQuestions;
@@ -208,7 +210,6 @@ function startQuiz() {
     filteredQuestions = quizQuestions.filter(q => q.category === selectedCategory);
   }
   
-  // Update total questions display
   totalQuestionsSpan.textContent = filteredQuestions.length;
   maxScoreSpan.textContent = filteredQuestions.length;
   
@@ -237,7 +238,6 @@ function showQuestion() {
   const progressPercent = ((currentQuestionIndex) / filteredQuestions.length) * 100;
   progressBar.style.width = progressPercent + "%";
   
-  // Start timer for this question
   startTimer();
   
   currentQuestion.answers.forEach(answer => {
@@ -250,7 +250,7 @@ function showQuestion() {
   });
 }
 
-// ==================== TIMER FUNCTIONS (Day 7) ====================
+// ==================== TIMER FUNCTIONS ====================
 
 function startTimer() {
   if (timerInterval) {
@@ -385,9 +385,7 @@ function showResults() {
   
   finalScoreSpan.textContent = score;
   
-  // Save score to history (Day 8)
   saveQuizResult(score, filteredQuestions.length);
-  
   saveHighScore(score);
   
   const percentage = (score / filteredQuestions.length) * 100;
@@ -449,7 +447,7 @@ function goHome() {
   startScreen.classList.add("active");
 }
 
-// ==================== NEW: STATISTICS FUNCTIONS (Day 8) ====================
+// ==================== STATISTICS FUNCTIONS ====================
 
 function showStatistics() {
   startScreen.classList.remove("active");
@@ -475,7 +473,6 @@ function saveQuizResult(score, total) {
     percentage: percentage
   });
   
-  // Keep only last 10 quizzes
   if (quizHistory.length > 10) {
     quizHistory.shift();
   }
@@ -503,10 +500,14 @@ function renderChart() {
   const ctx = document.getElementById("performance-chart").getContext("2d");
   const quizHistory = JSON.parse(localStorage.getItem("quizHistory")) || [];
   
-  // Destroy existing chart if it exists
   if (performanceChart) {
     performanceChart.destroy();
   }
+  
+  // Check if dark mode is active for chart colors
+  const isDarkMode = document.body.classList.contains("dark-mode");
+  const chartColor = isDarkMode ? '#4db6ac' : '#00796b';
+  const chartText = isDarkMode ? '#e0e0e0' : '#333333';
   
   performanceChart = new Chart(ctx, {
     type: 'line',
@@ -515,8 +516,8 @@ function renderChart() {
       datasets: [{
         label: 'Score Percentage',
         data: quizHistory.map(q => q.percentage),
-        borderColor: '#00796b',
-        backgroundColor: 'rgba(0, 121, 107, 0.1)',
+        borderColor: chartColor,
+        backgroundColor: isDarkMode ? 'rgba(77, 182, 172, 0.1)' : 'rgba(0, 121, 107, 0.1)',
         tension: 0.4,
         fill: true
       }]
@@ -527,11 +528,50 @@ function renderChart() {
       scales: {
         y: {
           beginAtZero: true,
-          max: 100
+          max: 100,
+          ticks: { color: chartText },
+          grid: { color: isDarkMode ? '#444' : '#e0e0e0' }
+        },
+        x: {
+          ticks: { color: chartText },
+          grid: { display: false }
         }
+      },
+      plugins: {
+        legend: { labels: { color: chartText } }
       }
     }
   });
+}
+
+// ==================== NEW: THEME TOGGLE FUNCTIONS (Day 9) ====================
+
+function toggleTheme() {
+  document.body.classList.toggle("dark-mode");
+  
+  const isDarkMode = document.body.classList.contains("dark-mode");
+  
+  // Update button icon
+  themeToggle.textContent = isDarkMode ? "☀️" : "🌙";
+  
+  // Save preference
+  localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+  
+  // Re-render chart with new colors if stats screen is active
+  if (statsScreen.classList.contains("active")) {
+    renderChart();
+  }
+}
+
+function loadTheme() {
+  const savedTheme = localStorage.getItem("theme");
+  
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+    themeToggle.textContent = "☀️";
+  } else {
+    themeToggle.textContent = "🌙";
+  }
 }
 
 // ==================== LOCAL STORAGE FUNCTIONS ====================

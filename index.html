@@ -14,7 +14,11 @@
         
         <!-- START SCREEN -->
         <div id="start-screen" class="screen active">
-            <h1>🩺 NurseQuiz</h1>
+            <div class="header-row">
+                <h1>🩺 NurseQuiz</h1>
+                <!-- NEW: Theme Toggle -->
+                <button id="theme-toggle" class="theme-btn">🌙</button>
+            </div>
             <p>Master your nursing knowledge for NCLEX</p>
             
             <!-- Streak Display -->
@@ -25,10 +29,10 @@
             <!-- High Score Display -->
             <p id="high-score-display" class="high-score">🏆 High Score: 0</p>
             
-            <!-- NEW: Statistics Button (Day 8) -->
+            <!-- Statistics Button -->
             <button id="stats-btn" class="stats-btn">📊 View Statistics</button>
             
-            <!-- Category Selection (Day 6) -->
+            <!-- Category Selection -->
             <div id="category-selection" class="category-selection">
                 <label for="category-select">Choose Topic:</label>
                 <select id="category-select">
@@ -54,7 +58,7 @@
                     <span id="current-question">Question 1</span>
                     <span>Score: <span id="score">0</span></span>
                 </div>
-                <!-- Timer Display (Day 7) -->
+                <!-- Timer Display -->
                 <div class="timer-display">
                     ⏱️ <span id="timer">15</span>s
                 </div>
@@ -88,7 +92,7 @@
             </div>
         </div>
 
-        <!-- REVIEW SCREEN (Day 5) -->
+        <!-- REVIEW SCREEN -->
         <div id="review-screen" class="screen">
             <h1>📖 Question Review</h1>
             <p class="review-subtitle">Review all questions and explanations</p>
@@ -100,7 +104,7 @@
             <button id="back-to-home-btn" class="home-btn">🏠 Back to Home</button>
         </div>
 
-        <!-- NEW: STATISTICS SCREEN (Day 8) -->
+        <!-- STATISTICS SCREEN -->
         <div id="stats-screen" class="screen">
             <h1>📊 Your Statistics</h1>
             <p class="review-subtitle">Track your NCLEX prep progress</p>
