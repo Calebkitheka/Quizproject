@@ -1,4 +1,4 @@
-// ==================== DOM ELEMENTS (FIXED: No spaces in IDs) ====================
+// ==================== DOM ELEMENTS ====================
 const startScreen = document.getElementById("start-screen");
 const quizScreen = document.getElementById("quiz-screen");
 const resultScreen = document.getElementById("result-screen");
@@ -6,7 +6,7 @@ const reviewScreen = document.getElementById("review-screen");
 const statsScreen = document.getElementById("stats-screen");
 const startButton = document.getElementById("start-btn");
 const statsButton = document.getElementById("stats-btn");
-const themeToggle = document.getElementById("theme-toggle"); // NEW: Day 9
+const themeToggle = document.getElementById("theme-toggle");
 const questionText = document.getElementById("question-text");
 const answerContainer = document.getElementById("answer-container");
 const currentQuestionSpan = document.getElementById("current-question");
@@ -33,7 +33,7 @@ const totalQuizzesEl = document.getElementById("total-quizzes");
 const averageScoreEl = document.getElementById("average-score");
 const bestScoreEl = document.getElementById("best-score");
 
-// ==================== NURSING QUESTIONS (Sample of 10 for brevity, use your 50) ====================
+// ==================== NURSING QUESTIONS ====================
 const quizQuestions = [
   {
     id: 1,
@@ -184,12 +184,12 @@ maxScoreSpan.textContent = quizQuestions.length;
 loadHighScore();
 loadStreak();
 loadStatistics();
-loadTheme(); // NEW: Day 9
+loadTheme();
 
-// ==================== EVENT LISTENERS (FIXED: Commas not dots) ====================
+// ==================== EVENT LISTENERS ====================
 startButton.addEventListener("click", startQuiz);
 statsButton.addEventListener("click", showStatistics);
-themeToggle.addEventListener("click", toggleTheme); // NEW: Day 9
+themeToggle.addEventListener("click", toggleTheme);
 restartButton.addEventListener("click", restartQuiz);
 reviewButton.addEventListener("click", showReview);
 backToHomeBtn.addEventListener("click", goHome);
@@ -231,6 +231,11 @@ function showQuestion() {
   currentQuestionSpan.textContent = `Question ${currentQuestionIndex + 1} of ${filteredQuestions.length}`;
   questionText.textContent = currentQuestion.question;
   
+  // Add animation class
+  questionText.classList.remove("fade-in");
+  void questionText.offsetWidth; // Trigger reflow
+  questionText.classList.add("fade-in");
+  
   if (categoryLabel) {
     categoryLabel.textContent = `📚 ${currentQuestion.category} • ${currentQuestion.difficulty.toUpperCase()}`;
   }
@@ -240,10 +245,11 @@ function showQuestion() {
   
   startTimer();
   
-  currentQuestion.answers.forEach(answer => {
+  currentQuestion.answers.forEach((answer, index) => {
     const button = document.createElement("button");
     button.textContent = answer.text;
-    button.classList.add("answer-btn");
+    button.classList.add("answer-btn", "slide-up");
+    button.style.animationDelay = `${index * 0.1}s`; // Staggered animation
     button.dataset.correct = answer.correct;
     button.addEventListener("click", selectAnswer);
     answerContainer.appendChild(button);
@@ -389,8 +395,11 @@ function showResults() {
   saveHighScore(score);
   
   const percentage = (score / filteredQuestions.length) * 100;
+  
+  // ===== NEW: CONFETTI CELEBRATION (Day 10) =====
   if (percentage === 100) {
     resultMessage.textContent = "🏆 Perfect! You're ready for clinicals!";
+    triggerConfetti();
   } else if (percentage >= 80) {
     resultMessage.textContent = "🎉 Excellent! Keep up the great work!";
   } else if (percentage >= 60) {
@@ -398,6 +407,29 @@ function showResults() {
   } else {
     resultMessage.textContent = "💪 Keep studying! Nursing school is a marathon.";
   }
+}
+
+// ===== NEW: CONFETTI FUNCTION =====
+function triggerConfetti() {
+  var duration = 3 * 1000;
+  var animationEnd = Date.now() + duration;
+  var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+  var random = function(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  var interval = setInterval(function() {
+    var timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    var particleCount = 50 * (timeLeft / duration);
+    confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 } }));
+    confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 } }));
+  }, 250);
 }
 
 function restartQuiz() {
@@ -504,7 +536,6 @@ function renderChart() {
     performanceChart.destroy();
   }
   
-  // Check if dark mode is active for chart colors
   const isDarkMode = document.body.classList.contains("dark-mode");
   const chartColor = isDarkMode ? '#4db6ac' : '#00796b';
   const chartText = isDarkMode ? '#e0e0e0' : '#333333';
@@ -544,20 +575,17 @@ function renderChart() {
   });
 }
 
-// ==================== NEW: THEME TOGGLE FUNCTIONS (Day 9) ====================
+// ==================== THEME TOGGLE FUNCTIONS ====================
 
 function toggleTheme() {
   document.body.classList.toggle("dark-mode");
   
   const isDarkMode = document.body.classList.contains("dark-mode");
   
-  // Update button icon
   themeToggle.textContent = isDarkMode ? "☀️" : "🌙";
   
-  // Save preference
   localStorage.setItem("theme", isDarkMode ? "dark" : "light");
   
-  // Re-render chart with new colors if stats screen is active
   if (statsScreen.classList.contains("active")) {
     renderChart();
   }

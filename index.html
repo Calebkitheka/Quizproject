@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="style.css">
     <!-- Chart.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
@@ -16,7 +18,7 @@
         <div id="start-screen" class="screen active">
             <div class="header-row">
                 <h1>🩺 NurseQuiz</h1>
-                <!-- NEW: Theme Toggle -->
+                <!-- Theme Toggle -->
                 <button id="theme-toggle" class="theme-btn">🌙</button>
             </div>
             <p>Master your nursing knowledge for NCLEX</p>
@@ -64,7 +66,7 @@
                 </div>
             </div>
             
-            <h2 id="question-text">Question goes here</h2>
+            <h2 id="question-text" class="fade-in">Question goes here</h2>
             
             <div id="category-label" class="category-label"></div>
             
