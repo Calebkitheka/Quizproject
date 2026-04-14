@@ -19,7 +19,7 @@
             <div class="header-row">
                 <h1>🩺 NurseQuiz</h1>
                 <!-- Theme Toggle -->
-                <button id="theme-toggle" class="theme-btn">🌙</button>
+                <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark Mode">🌙</button>
             </div>
             <p>Master your nursing knowledge for NCLEX</p>
             
@@ -37,7 +37,7 @@
             <!-- Category Selection -->
             <div id="category-selection" class="category-selection">
                 <label for="category-select">Choose Topic:</label>
-                <select id="category-select">
+                <select id="category-select" aria-label="Select Quiz Category">
                     <option value="all">📚 All Categories</option>
                     <option value="Vital Signs">Vital Signs</option>
                     <option value="Anatomy & Physiology">Anatomy & Physiology</option>
@@ -55,13 +55,18 @@
 
         <!-- QUIZ SCREEN -->
         <div id="quiz-screen" class="screen">
+            <!-- LIVE REGION: Announces changes to screen readers -->
+            <div aria-live="polite" class="sr-only">
+                <span id="announcement"></span>
+            </div>
+
             <div class="quiz-header">
                 <div class="quiz-info">
                     <span id="current-question">Question 1</span>
                     <span>Score: <span id="score">0</span></span>
                 </div>
                 <!-- Timer Display -->
-                <div class="timer-display">
+                <div class="timer-display" role="timer" aria-label="Time Remaining">
                     ⏱️ <span id="timer">15</span>s
                 </div>
             </div>
@@ -70,7 +75,10 @@
             
             <div id="category-label" class="category-label"></div>
             
-            <div id="answer-container" class="answers-container">
+            <!-- Hint Button (Day 11) -->
+            <button id="hint-btn" class="hint-btn" aria-label="Use 50/50 Hint">💡 50/50 Hint</button>
+            
+            <div id="answer-container" class="answers-container" role="group" aria-label="Answer Options">
                 <!-- Answer buttons inserted by JavaScript -->
             </div>
 

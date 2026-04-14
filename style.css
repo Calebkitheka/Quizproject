@@ -17,6 +17,7 @@
   --timer-bg: #fff3e0;
   --timer-text: #e65100;
   --chart-bg: #f9f9f9;
+  --focus-color: #004d40;
 }
 
 /* ===== DARK MODE VARIABLES ===== */
@@ -38,6 +39,7 @@ body.dark-mode {
   --timer-bg: #3e2723;
   --timer-text: #ffab91;
   --chart-bg: #2c2c2c;
+  --focus-color: #80cbc4;
 }
 
 /* Basic Reset */
@@ -82,7 +84,20 @@ body {
   animation: fadeIn 0.5s ease;
 }
 
-/* ===== NEW: ANIMATIONS (Day 10) ===== */
+/* ===== NEW: SCREEN READER ONLY (Day 12) ===== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== ANIMATIONS ===== */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -137,6 +152,13 @@ body {
   background-color: var(--primary-color);
   color: white;
   transform: rotate(15deg);
+}
+
+/* ===== NEW: FOCUS STATES (Day 12) ===== */
+button:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--focus-color);
+  outline-offset: 2px;
 }
 
 /* Streak Box */
@@ -249,6 +271,31 @@ body {
   50% { opacity: 0.5; }
 }
 
+/* ===== NEW: HINT BUTTON (Day 11) ===== */
+.hint-btn {
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: all 0.2s ease;
+}
+
+.hint-btn:hover {
+  background-color: #f57c00;
+  transform: translateY(-2px);
+}
+
+.hint-btn:disabled {
+  background-color: var(--text-secondary);
+  cursor: not-allowed;
+  opacity: 0.5;
+  transform: none;
+}
+
 /* Answers Container */
 .answers-container {
   display: flex;
@@ -271,7 +318,7 @@ body {
 
 .answer-btn:hover {
   background-color: var(--border-color);
-  transform: translateX(5px); /* NEW: Slight slide on hover */
+  transform: translateX(5px);
 }
 
 .answer-btn.correct {
@@ -291,6 +338,10 @@ body {
 .answer-btn:disabled {
   cursor: not-allowed;
   opacity: 0.7;
+}
+
+.answer-btn.hidden {
+  display: none; /* For 50/50 Hint */
 }
 
 /* Explanation Box */
@@ -363,7 +414,7 @@ button {
 
 button:hover {
   background-color: var(--primary-hover);
-  transform: translateY(-2px); /* NEW: Lift on hover */
+  transform: translateY(-2px);
 }
 
 button:active {

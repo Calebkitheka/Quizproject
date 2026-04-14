@@ -7,6 +7,7 @@ const statsScreen = document.getElementById("stats-screen");
 const startButton = document.getElementById("start-btn");
 const statsButton = document.getElementById("stats-btn");
 const themeToggle = document.getElementById("theme-toggle");
+const hintButton = document.getElementById("hint-btn"); // NEW: Day 11
 const questionText = document.getElementById("question-text");
 const answerContainer = document.getElementById("answer-container");
 const currentQuestionSpan = document.getElementById("current-question");
@@ -27,6 +28,7 @@ const explanationBox = document.getElementById("explanation-box");
 const reviewContainer = document.getElementById("review-container");
 const categorySelect = document.getElementById("category-select");
 const timerDisplay = document.getElementById("timer");
+const announcement = document.getElementById("announcement"); // NEW: Day 12
 
 // Statistics Elements
 const totalQuizzesEl = document.getElementById("total-quizzes");
@@ -176,6 +178,7 @@ let timerInterval = null;
 let timeLeft = 15;
 const TIME_PER_QUESTION = 15;
 let performanceChart = null;
+let hintUsed = false; // NEW: Day 11 - Track hint usage
 
 // ==================== INITIALIZATION ====================
 maxScoreSpan.textContent = quizQuestions.length;
@@ -190,6 +193,7 @@ loadTheme();
 startButton.addEventListener("click", startQuiz);
 statsButton.addEventListener("click", showStatistics);
 themeToggle.addEventListener("click", toggleTheme);
+hintButton.addEventListener("click", useHint); // NEW: Day 11
 restartButton.addEventListener("click", restartQuiz);
 reviewButton.addEventListener("click", showReview);
 backToHomeBtn.addEventListener("click", goHome);
@@ -201,6 +205,7 @@ function startQuiz() {
   currentQuestionIndex = 0;
   score = 0;
   userAnswers = [];
+  hintUsed = false; // Reset hint
   scoreSpan.textContent = score;
   
   const selectedCategory = categorySelect.value;
@@ -231,6 +236,9 @@ function showQuestion() {
   currentQuestionSpan.textContent = `Question ${currentQuestionIndex + 1} of ${filteredQuestions.length}`;
   questionText.textContent = currentQuestion.question;
   
+  // NEW: Day 12 - Announce to screen readers
+  announce(`Question ${currentQuestionIndex + 1} of ${filteredQuestions.length}. ${currentQuestion.question}`);
+  
   // Add animation class
   questionText.classList.remove("fade-in");
   void questionText.offsetWidth; // Trigger reflow
@@ -243,6 +251,10 @@ function showQuestion() {
   const progressPercent = ((currentQuestionIndex) / filteredQuestions.length) * 100;
   progressBar.style.width = progressPercent + "%";
   
+  // Reset Hint Button
+  hintButton.disabled = hintUsed;
+  hintButton.textContent = hintUsed ? "💡 Hint Used" : "💡 50/50 Hint";
+  
   startTimer();
   
   currentQuestion.answers.forEach((answer, index) => {
@@ -251,9 +263,49 @@ function showQuestion() {
     button.classList.add("answer-btn", "slide-up");
     button.style.animationDelay = `${index * 0.1}s`; // Staggered animation
     button.dataset.correct = answer.correct;
+    button.dataset.index = index; // Track index for hint logic
+    button.setAttribute("tabindex", "0"); // NEW: Day 12 - Keyboard accessible
+    button.setAttribute("role", "button");
+    button.setAttribute("aria-label", answer.text);
+    
+    // NEW: Day 12 - Keyboard Support
+    button.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        selectAnswer(e);
+      }
+    });
+    
     button.addEventListener("click", selectAnswer);
     answerContainer.appendChild(button);
   });
+}
+
+// ==================== NEW: HINT FUNCTION (Day 11) ====================
+function useHint() {
+  if (hintUsed) return;
+  
+  const currentQuestion = filteredQuestions[currentQuestionIndex];
+  const buttons = Array.from(answerContainer.children);
+  
+  // Find incorrect answers
+  const incorrectButtons = buttons.filter(btn => btn.dataset.correct === "false");
+  
+  // Hide 2 incorrect answers (50/50)
+  let hiddenCount = 0;
+  incorrectButtons.forEach(btn => {
+    if (hiddenCount < 2) {
+      btn.classList.add("hidden");
+      btn.disabled = true;
+      btn.setAttribute("aria-hidden", "true"); // NEW: Day 12 - Hide from screen readers
+      hiddenCount++;
+    }
+  });
+  
+  hintUsed = true;
+  hintButton.disabled = true;
+  hintButton.textContent = "💡 Hint Used";
+  announce("Hint used. Two incorrect answers removed.");
 }
 
 // ==================== TIMER FUNCTIONS ====================
@@ -314,6 +366,8 @@ function handleTimeOut() {
     explanationBox.style.display = "block";
   }
   
+  announce("Time is up. Moving to next question.");
+  
   setTimeout(() => {
     currentQuestionIndex++;
     if (currentQuestionIndex < filteredQuestions.length) {
@@ -357,8 +411,10 @@ function selectAnswer(e) {
     selectedBtn.classList.add("correct");
     score++;
     scoreSpan.textContent = score;
+    announce("Correct!");
   } else {
     selectedBtn.classList.add("incorrect");
+    announce("Incorrect.");
   }
   
   Array.from(answerContainer.children).forEach(button => {
@@ -396,20 +452,23 @@ function showResults() {
   
   const percentage = (score / filteredQuestions.length) * 100;
   
-  // ===== NEW: CONFETTI CELEBRATION (Day 10) =====
   if (percentage === 100) {
     resultMessage.textContent = "🏆 Perfect! You're ready for clinicals!";
+    announce("Perfect score! Congratulations.");
     triggerConfetti();
   } else if (percentage >= 80) {
     resultMessage.textContent = "🎉 Excellent! Keep up the great work!";
+    announce("Excellent job.");
   } else if (percentage >= 60) {
     resultMessage.textContent = "📚 Good effort! Review the explanations.";
+    announce("Good effort.");
   } else {
     resultMessage.textContent = "💪 Keep studying! Nursing school is a marathon.";
+    announce("Keep studying.");
   }
 }
 
-// ===== NEW: CONFETTI FUNCTION =====
+// ===== CONFETTI FUNCTION =====
 function triggerConfetti() {
   var duration = 3 * 1000;
   var animationEnd = Date.now() + duration;
@@ -430,6 +489,11 @@ function triggerConfetti() {
     confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 } }));
     confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 } }));
   }, 250);
+}
+
+// ===== NEW: ANNOUNCE FUNCTION (Day 12) =====
+function announce(message) {
+  announcement.textContent = message;
 }
 
 function restartQuiz() {
